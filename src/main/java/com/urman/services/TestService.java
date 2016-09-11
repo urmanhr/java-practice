@@ -7,10 +7,11 @@ import javax.ws.rs.core.MediaType;
 
 import com.urman.model.Model;
 
+@Path("u/form")
 public class TestService{
 
 	@GET
-	@Path("u/form")
+	@Path("/get1")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Model testMethod(){
 		

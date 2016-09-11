@@ -1,5 +1,7 @@
 package com.urman.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Model {
 
 	
@@ -8,30 +10,34 @@ public class Model {
 	private String surName;
 	
 	private Integer age;
+	
+	public Model(){
+		
+	}
+	
+	public Model(String name, String surName, Integer age) {
+		super();
+		this.name = name;
+		this.surName = surName;
+		this.age = age;
+	}
 
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	@JsonProperty
 	public String getSurName() {
 		return surName;
 	}
-
-	public void setSurName(String surName) {
-		this.surName = surName;
-	}
-
+	
+	@JsonProperty
 	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(Integer age) {
-		this.age = age;
-	}
+	
 	
 	
 	

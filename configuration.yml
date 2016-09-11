@@ -1,2 +1,2 @@
-messages:
-  hello: Hello world!
+template: Hello, %s!
+defaultName: Stranger

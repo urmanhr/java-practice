@@ -8,11 +8,13 @@ import javax.servlet.FilterRegistration;
 import javax.ws.rs.Path;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.urman.health.TemplateHealthCheck;
+import com.urman.services.TestService;
 import com.urman.util.ServiceConfiguration;
 
 import io.dropwizard.Application;
@@ -20,9 +22,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 public class Test extends Application<ServiceConfiguration>{
-
-	//@Autowired
-	TemplateHealthCheck templateHealthCheck;
 	
 	public static void main(String[] args) throws Exception {
         new Test().run(args);
@@ -52,11 +51,11 @@ public class Test extends Application<ServiceConfiguration>{
         for(Map.Entry<String,Object> entry : resources.entrySet()) {
             environment.jersey().register(entry.getValue());
         }
-    	/*final TestService service=new TestService();
+    	final TestService service=new TestService();
     	final TemplateHealthCheck healthCheck =
     	        new TemplateHealthCheck(configuration.getTemplate());
     	    environment.healthChecks().register("template", healthCheck);
-    	environment.jersey().register(service);*/
+    	environment.jersey().register(service);
     	// Enable CORS headers
         final FilterRegistration.Dynamic cors =
             environment.servlets().addFilter("cors", CrossOriginFilter.class);

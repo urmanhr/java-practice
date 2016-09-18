@@ -1,10 +1,7 @@
 package com.urman.health;
 
-import org.springframework.stereotype.Component;
-
 import com.codahale.metrics.health.HealthCheck;
 
-//@Component("templateHealthCheck")
 public class TemplateHealthCheck extends HealthCheck{
 
 	private final String template;

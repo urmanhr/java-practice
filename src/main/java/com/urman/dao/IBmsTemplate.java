@@ -10,4 +10,6 @@ public interface IBmsTemplate {
 
 	AccountInfo getAccountInfo(Long accountNumber);
 
+	List<AccountInfo> getcustomerAccounts(String customerId);
+
 }

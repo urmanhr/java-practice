@@ -5,7 +5,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name="account_info")
@@ -15,8 +20,8 @@ public class AccountInfo {
 	@Column(name="account_no")
 	private Long accountNumber;
 	
-	@Column(name="customer_id")
-	private String customerId;
+	/*@Column(name="customer_id")
+	private String customerId;*/
 	
 	@Column(name="account_type")
 	private String accountType;
@@ -35,6 +40,11 @@ public class AccountInfo {
 	
 	@Column(name="intial_deposit")
 	private Long intialDeposit;
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	CustomerPersonalInfo customerPersonalInfo;
 
 	public Long getAccountNumber() {
 		return accountNumber;
@@ -44,16 +54,24 @@ public class AccountInfo {
 		this.accountNumber = accountNumber;
 	}
 
-	public String getCustomerId() {
+	/*public String getCustomerId() {
 		return customerId;
 	}
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
-	}
+	}*/
 
 	public String getAccountType() {
 		return accountType;
+	}
+
+	public CustomerPersonalInfo getCustomerPersonalInfo() {
+		return customerPersonalInfo;
+	}
+
+	public void setCustomerPersonalInfo(CustomerPersonalInfo customerPersonalInfo) {
+		this.customerPersonalInfo = customerPersonalInfo;
 	}
 
 	public void setAccountType(String accountType) {
@@ -98,6 +116,13 @@ public class AccountInfo {
 
 	public void setIntialDeposit(Long intialDeposit) {
 		this.intialDeposit = intialDeposit;
+	}
+
+	@Override
+	public String toString() {
+		return "AccountInfo [accountNumber=" + accountNumber + ", accountType=" + accountType + ", registrationDate="
+				+ registrationDate + ", activationDate=" + activationDate + ", ifscCode=" + ifscCode + ", interest="
+				+ interest + ", intialDeposit=" + intialDeposit + "]";
 	}
 	
 	

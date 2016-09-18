@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.urman.hibernate.pojo.AccountInfo;
+import com.urman.hibernate.pojo.CustomerPersonalInfo;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -59,6 +60,28 @@ public class BmsTemplateImpl implements IBmsTemplate{
 		}
 		
 		return accountInfo;
+	}
+
+	@Override
+	public List<AccountInfo> getcustomerAccounts(String customerId) {
+
+		List<AccountInfo> lstAccounts=null;
+Session session=sessionFactory.openSession();
+		
+		try{
+			Criteria cr=session.createCriteria(CustomerPersonalInfo.class);
+			cr.add(Restrictions.eq("customerId", customerId));
+			@SuppressWarnings("unchecked")
+			List<CustomerPersonalInfo> results= cr.list();
+			CustomerPersonalInfo customerInfo=results.get(0);
+			lstAccounts=customerInfo.getLstAccounts();
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return lstAccounts;
 	}
 
 	

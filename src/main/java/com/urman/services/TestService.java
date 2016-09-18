@@ -52,7 +52,7 @@ public class TestService {
 		List<AccountInfo> lstaccounts = null;
 		try {
 			JSONArray accountNumbers = jsonObject.getJSONArray("accountnumber");
-			List<Long> accNumbers=new ArrayList<Long>();
+			List<Long> accNumbers = new ArrayList<Long>();
 			for (Object object : accountNumbers) {
 				accNumbers.add(Long.parseLong(object.toString()));
 			}
@@ -63,4 +63,21 @@ public class TestService {
 		return Response.status(200).entity(lstaccounts).build();
 	}
 
+	@POST
+	@Path("/customeracc")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response showCustomerAccountInfo(JSONObject jsonObject) {
+
+		List<AccountInfo> lstaccounts = null;
+		try {
+			String customerId = jsonObject.getString("customerid");
+			
+			lstaccounts = bmsTemplateImpl.getcustomerAccounts(customerId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(lstaccounts).build();
+	}
+	
 }

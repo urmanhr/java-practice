@@ -8,7 +8,6 @@ import javax.servlet.FilterRegistration;
 import javax.ws.rs.Path;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

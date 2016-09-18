@@ -3,6 +3,7 @@ package com.urman.dao;
 import java.util.List;
 
 import com.urman.hibernate.pojo.AccountInfo;
+import com.urman.hibernate.pojo.CustomerPersonalInfo;
 
 public interface IBmsTemplate {
 	
@@ -10,6 +11,12 @@ public interface IBmsTemplate {
 
 	AccountInfo getAccountInfo(Long accountNumber);
 
-	List<AccountInfo> getcustomerAccounts(String customerId);
+	List<AccountInfo> getCustomerAccounts(String customerId);
+
+	CustomerPersonalInfo getCustomerInfo(String customerId);
+
+	void createAccount(AccountInfo accountInfo);
+
+	List<String> getAllCustomerIds();
 
 }

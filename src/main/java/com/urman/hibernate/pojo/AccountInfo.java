@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,11 +19,9 @@ import javax.persistence.ManyToOne;
 public class AccountInfo {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="account_no")
 	private Long accountNumber;
-	
-	/*@Column(name="customer_id")
-	private String customerId;*/
 	
 	@Column(name="account_type")
 	private String accountType;
@@ -36,7 +36,7 @@ public class AccountInfo {
 	private String ifscCode;
 	
 	@Column(name="interest")
-	private Integer interest;
+	private Float interest;
 	
 	@Column(name="intial_deposit")
 	private Long intialDeposit;
@@ -53,14 +53,6 @@ public class AccountInfo {
 	public void setAccountNumber(Long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-
-	/*public String getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}*/
 
 	public String getAccountType() {
 		return accountType;
@@ -102,11 +94,13 @@ public class AccountInfo {
 		this.ifscCode = ifscCode;
 	}
 
-	public Integer getInterest() {
+	
+
+	public Float getInterest() {
 		return interest;
 	}
 
-	public void setInterest(Integer interest) {
+	public void setInterest(Float interest) {
 		this.interest = interest;
 	}
 

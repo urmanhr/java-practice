@@ -1,13 +1,19 @@
 package com.urman.health;
 
+import org.springframework.stereotype.Component;
+
 import com.codahale.metrics.health.HealthCheck;
 
+@Component
 public class TemplateHealthCheck extends HealthCheck{
 
-	private final String template;
+	private String template;
 	
 	public TemplateHealthCheck(String template) {
         this.template = template;
+    }
+	
+	public TemplateHealthCheck() {
     }
 
 	@Override

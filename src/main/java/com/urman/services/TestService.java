@@ -25,7 +25,6 @@ import com.urman.hibernate.pojo.CustomerPersonalInfo;
 import com.urman.model.Model;
 import com.urman.util.BaseException;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Path("u/form")

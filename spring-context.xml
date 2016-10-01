@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-4.1.xsd
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    http://www.springframework.org/schema/context/spring-context-4.1.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<context:annotation-config>
-		<context:component-scan base-package="com.urman" />
-	</context:annotation-config>
+	<!-- <sec:http entry-point-ref="customEntryPoint" use-expressions="true"> 
+		<sec:custom-filter ref="authenticationFilter" before="PRE_AUTH_FILTER" /> 
+		<sec:intercept-url pattern="/**" access="hasAuthority('AUTH_USER')" /> <sec:logout 
+		delete-cookies="JSESSIONID" /> <sec:csrf disabled="true" /> </sec:http> -->
+
 	<context:component-scan base-package="com.urman" />
-	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- <sec:authentication-manager> <sec:authentication-provider ref="customAuthenticationProvider" 
+		/> </sec:authentication-manager> -->
+
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
 		<property name="url" value="jdbc:mysql://localhost:3306/bms_db"></property>
@@ -38,5 +51,11 @@
 			</props>
 		</property>
 	</bean>
+
+	<!-- <bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"> 
+		<property name="authenticationManager" ref="authenticationManager" /> <property 
+		name="postOnly" value="false" /> <property name="authenticationSuccessHandler" 
+		ref="customSuccessHandler" /> </bean> <bean id="customSuccessHandler" class="com.jcg.examples.authentication.CustomSuccessHandler" 
+		/> -->
 
 </beans>

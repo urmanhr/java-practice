@@ -3,6 +3,8 @@ package com.urman.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Transaction;
 
 import org.hibernate.SessionFactory;
@@ -18,11 +20,14 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
+@Transactional
 @Repository("bmsTemplateImpl")
 public class BmsTemplateImpl implements IBmsTemplate {
 
 	@Autowired
 	SessionFactory sessionFactory;
+	
+	Session session;
 
 	public static Logger LOGGER = Logger.getLogger(BmsTemplateImpl.class);
 
@@ -31,7 +36,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	public List<AccountInfo> getLstAccountInfo(List<Long> accountNumbers) {
 
 		List<AccountInfo> lstAccountInfo = null;
-		Session session = sessionFactory.openSession();
+		if(null!=session && session.isOpen()){
+			session = sessionFactory.getCurrentSession();
+		}
+		else{
+			session = sessionFactory.openSession();			
+		}
 
 		try {
 			Criteria cr = session.createCriteria(AccountInfo.class);
@@ -48,7 +58,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	@Override
 	public AccountInfo getAccountInfo(Long accountNumber) {
 		AccountInfo accountInfo = null;
-		Session session = sessionFactory.openSession();
+		if(null!=session && session.isOpen()){
+			session = sessionFactory.getCurrentSession();
+		}
+		else{
+			session = sessionFactory.openSession();			
+		}
 
 		try {
 			Criteria cr = session.createCriteria(AccountInfo.class);
@@ -68,7 +83,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	public List<AccountInfo> getCustomerAccounts(String customerId) {
 
 		List<AccountInfo> lstAccounts = null;
-		Session session = sessionFactory.openSession();
+		if(null!=session && session.isOpen()){
+			session = sessionFactory.getCurrentSession();
+		}
+		else{
+			session = sessionFactory.openSession();			
+		}
 
 		try {
 			Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
@@ -89,7 +109,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	public CustomerPersonalInfo getCustomerInfo(String customerId) {
 
 		CustomerPersonalInfo customerPersonalInfo = null;
-		Session session = sessionFactory.openSession();
+		if(null!=session && session.isOpen()){
+			session = sessionFactory.getCurrentSession();
+		}
+		else{
+			session = sessionFactory.openSession();			
+		}
 		try {
 			Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
 			cr.add(Restrictions.eq("customerId", customerId));
@@ -107,7 +132,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	@Override
 	public void createAccount(AccountInfo accountInfo) {
 
-		Session session = sessionFactory.openSession();
+		if(null!=session && session.isOpen()){
+			session = sessionFactory.getCurrentSession();
+		}
+		else{
+			session = sessionFactory.openSession();			
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -125,7 +155,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 
 		List<String> customerIds=null;
 		
-		Session session = sessionFactory.openSession();
+		if(null!=session && session.isOpen()){
+			session = sessionFactory.getCurrentSession();
+		}
+		else{
+			session = sessionFactory.openSession();			
+		}
 		try {
 			Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
 			cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

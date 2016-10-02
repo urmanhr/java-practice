@@ -48,7 +48,7 @@ public class TestService {
 			model = new Model("urman", s, 25);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
 		}
 
 		return Response.status(Response.Status.OK).entity(model).build();
@@ -70,7 +70,7 @@ public class TestService {
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
 		}
 		return Response.status(Response.Status.OK).entity(accountInfo).build();
 	}
@@ -91,7 +91,7 @@ public class TestService {
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
 
 		}
 		return Response.status(Response.Status.OK).entity(lstaccounts).build();
@@ -110,7 +110,7 @@ public class TestService {
 
 		} catch (Exception e) {
 			LOGGER.error("could not create account because of " + e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
 
 		}
 		return Response.status(Response.Status.CREATED).entity(jsonObject).build();
@@ -126,7 +126,7 @@ public class TestService {
 			customerIds = testServiceHelper.getAllCustomerIds();
 		} catch (Exception e) {
 			LOGGER.error("could not create account because of " + e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
 		}
 
 		return Response.status(Response.Status.OK).entity(customerIds).build();

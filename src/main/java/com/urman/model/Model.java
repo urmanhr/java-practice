@@ -37,6 +37,11 @@ public class Model {
 		return age;
 	}
 
+	@Override
+	public String toString() {
+		return "Model [name=" + name + ", surName=" + surName + ", age=" + age + "]";
+	}
+
 	
 	
 	

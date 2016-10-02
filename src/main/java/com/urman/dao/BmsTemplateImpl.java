@@ -26,7 +26,7 @@ public class BmsTemplateImpl implements IBmsTemplate {
 
 	@Autowired
 	SessionFactory sessionFactory;
-	
+
 	Session session;
 
 	public static Logger LOGGER = Logger.getLogger(BmsTemplateImpl.class);
@@ -37,15 +37,10 @@ public class BmsTemplateImpl implements IBmsTemplate {
 
 		List<AccountInfo> lstAccountInfo = null;
 		session = sessionFactory.getCurrentSession();
-	
-		try {
-			Criteria cr = session.createCriteria(AccountInfo.class);
-			cr.add(Restrictions.in("accountNumber", accountNumbers));
-			lstAccountInfo = cr.list();
 
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
+		Criteria cr = session.createCriteria(AccountInfo.class);
+		cr.add(Restrictions.in("accountNumber", accountNumbers));
+		lstAccountInfo = cr.list();
 
 		return lstAccountInfo;
 	}
@@ -54,17 +49,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	public AccountInfo getAccountInfo(Long accountNumber) {
 		AccountInfo accountInfo = null;
 		session = sessionFactory.getCurrentSession();
-		
-		try {
-			Criteria cr = session.createCriteria(AccountInfo.class);
-			cr.add(Restrictions.eq("accountNumber", accountNumber));
-			@SuppressWarnings("unchecked")
-			List<AccountInfo> results = cr.list();
-			accountInfo = results.get(0);
 
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
+		Criteria cr = session.createCriteria(AccountInfo.class);
+		cr.add(Restrictions.eq("accountNumber", accountNumber));
+		@SuppressWarnings("unchecked")
+		List<AccountInfo> results = cr.list();
+		accountInfo = results.get(0);
 
 		return accountInfo;
 	}
@@ -95,16 +85,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 
 		CustomerPersonalInfo customerPersonalInfo = null;
 		session = sessionFactory.getCurrentSession();
-		try {
-			Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
-			cr.add(Restrictions.eq("customerId", customerId));
-			@SuppressWarnings("unchecked")
-			List<CustomerPersonalInfo> results = cr.list();
-			customerPersonalInfo = results.get(0);
 
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
+		Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
+		cr.add(Restrictions.eq("customerId", customerId));
+		@SuppressWarnings("unchecked")
+		List<CustomerPersonalInfo> results = cr.list();
+		customerPersonalInfo = results.get(0);
 
 		return customerPersonalInfo;
 	}
@@ -114,37 +100,27 @@ public class BmsTemplateImpl implements IBmsTemplate {
 
 		session = sessionFactory.getCurrentSession();
 		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.save(accountInfo);
-			tx.commit();
-
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
+		tx = session.beginTransaction();
+		session.save(accountInfo);
+		tx.commit();
 
 	}
 
 	@Override
 	public List<String> getAllCustomerIds() {
 
-		List<String> customerIds=null;
-		
-		session = sessionFactory.getCurrentSession();
-		try {
-			Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
-			cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-			@SuppressWarnings("unchecked")
-			List<CustomerPersonalInfo> results = cr.list();
-			customerIds=new ArrayList<String>();
-			for (CustomerPersonalInfo customerPersonalInfo : results) {
-				customerIds.add(customerPersonalInfo.getCustomerId());
-			}
+		List<String> customerIds = null;
 
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
+		session = sessionFactory.getCurrentSession();
+		Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
+		cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		@SuppressWarnings("unchecked")
+		List<CustomerPersonalInfo> results = cr.list();
+		customerIds = new ArrayList<String>();
+		for (CustomerPersonalInfo customerPersonalInfo : results) {
+			customerIds.add(customerPersonalInfo.getCustomerId());
 		}
-		
+
 		return customerIds;
 	}
 

@@ -1,13 +1,11 @@
 package com.urman.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -19,11 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.urman.dao.IBmsTemplate;
 import com.urman.hibernate.pojo.AccountInfo;
-import com.urman.hibernate.pojo.CustomerPersonalInfo;
 import com.urman.model.Model;
 import com.urman.util.BaseException;
+import com.urman.util.TestServiceHelper;
 
 import net.sf.json.JSONObject;
 
@@ -32,23 +29,29 @@ import net.sf.json.JSONObject;
 public class TestService {
 
 	@Autowired
-	IBmsTemplate bmsTemplateImpl;
+	TestServiceHelper testServiceHelper;
 
 	public static Logger LOGGER = Logger.getLogger(TestService.class);
 
 	@GET
 	@Path("/get1")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Model testMethod() {
+	public Response testMethod() {
 		LOGGER.setLevel(Level.ALL);
 		List<Long> accountNumbers = new ArrayList<Long>();
-		accountNumbers.add(1234567898765432L);
-		accountNumbers.add(1234567898765433L);
-		List<AccountInfo> lstAccounts = bmsTemplateImpl.getLstAccountInfo(accountNumbers);
-		String s = lstAccounts.get(0).getAccountType();
-		Model model = new Model("urman", s, 25);
+		Model model = null;
+		try {
+			accountNumbers.add(1234567898765432L);
+			accountNumbers.add(1234567898765433L);
+			List<AccountInfo> lstAccounts = testServiceHelper.getLstAccountInfo(accountNumbers);
+			String s = lstAccounts.get(0).getAccountType();
+			model = new Model("urman", s, 25);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
 
-		return model;
+		return Response.status(Response.Status.OK).entity(model).build();
 	}
 
 	@POST
@@ -61,14 +64,15 @@ public class TestService {
 		try {
 			Long accountNumber = jsonObject.getLong("accountnumber");
 
-			accountInfo = bmsTemplateImpl.getAccountInfo(accountNumber);
+			accountInfo = testServiceHelper.getAccountInfo(accountNumber);
 			if (null == accountInfo) {
 				throw new BaseException("accounts not found");
 			}
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
-		return Response.status(200).entity(accountInfo).build();
+		return Response.status(Response.Status.OK).entity(accountInfo).build();
 	}
 
 	@POST
@@ -81,18 +85,19 @@ public class TestService {
 		try {
 			String customerId = jsonObject.getString("customerid");
 
-			lstaccounts = bmsTemplateImpl.getCustomerAccounts(customerId);
+			lstaccounts = testServiceHelper.getCustomerAccounts(customerId);
 			if (null == lstaccounts || CollectionUtils.isEmpty(lstaccounts)) {
 				throw new BaseException("accounts not found");
 			}
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 
 		}
-		return Response.status(200).entity(lstaccounts).build();
+		return Response.status(Response.Status.OK).entity(lstaccounts).build();
 	}
 
-	@PUT
+	@POST
 	@Path("/createAccount")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addCustomerAccountInfo(JSONObject jsonObject) {
@@ -100,43 +105,31 @@ public class TestService {
 		AccountInfo accountInfo = null;
 
 		try {
-			accountInfo = getAccountInfoFromJson(jsonObject);
-			bmsTemplateImpl.createAccount(accountInfo);
+			accountInfo = testServiceHelper.getAccountInfoFromJson(jsonObject);
+			testServiceHelper.createAccount(accountInfo);
 
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error("could not create account because of " + e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 
 		}
-		return null;
+		return Response.status(Response.Status.CREATED).entity(jsonObject).build();
 	}
 
 	@GET
 	@Path("/getCustomerIds")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<String> getCustomerIds() {
+	public Response getCustomerIds() {
 		LOGGER.setLevel(Level.ALL);
-		
-		List<String> customerIds=bmsTemplateImpl.getAllCustomerIds();
-		
+		List<String> customerIds = null;
+		try {
+			customerIds = testServiceHelper.getAllCustomerIds();
+		} catch (Exception e) {
+			LOGGER.error("could not create account because of " + e.getMessage(), e);
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
 
-		return customerIds;
-	}
-	
-	private AccountInfo getAccountInfoFromJson(JSONObject jsonObject) {
-
-		AccountInfo accountInfo = new AccountInfo();
-
-		accountInfo.setAccountType(jsonObject.getString("account_type"));
-		accountInfo.setActivationDate(new Date());
-		CustomerPersonalInfo customerPersonalInfo = bmsTemplateImpl
-				.getCustomerInfo(jsonObject.getString("customer_id"));
-		accountInfo.setCustomerPersonalInfo(customerPersonalInfo);
-		accountInfo.setIfscCode(jsonObject.getString("ifsc_code"));
-		accountInfo.setInterest(Float.parseFloat(jsonObject.getString("interest")));
-		accountInfo.setIntialDeposit(jsonObject.getLong("initial_deposit"));
-		accountInfo.setRegistrationDate(new Date());
-
-		return accountInfo;
+		return Response.status(Response.Status.OK).entity(customerIds).build();
 	}
 
 }

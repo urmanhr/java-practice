@@ -48,7 +48,9 @@ public class TestService {
 			model = new Model("urman", s, 25);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+			JSONObject error=new JSONObject();
+			error.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
 		}
 
 		return Response.status(Response.Status.OK).entity(model).build();
@@ -70,7 +72,9 @@ public class TestService {
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+			JSONObject error=new JSONObject();
+			error.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
 		}
 		return Response.status(Response.Status.OK).entity(accountInfo).build();
 	}
@@ -91,7 +95,9 @@ public class TestService {
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+			JSONObject error=new JSONObject();
+			error.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
 
 		}
 		return Response.status(Response.Status.OK).entity(lstaccounts).build();
@@ -100,6 +106,7 @@ public class TestService {
 	@POST
 	@Path("/createAccount")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addCustomerAccountInfo(JSONObject jsonObject) {
 		LOGGER.setLevel(Level.ALL);
 		AccountInfo accountInfo = null;
@@ -110,7 +117,9 @@ public class TestService {
 
 		} catch (Exception e) {
 			LOGGER.error("could not create account because of " + e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+			JSONObject error=new JSONObject();
+			error.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
 
 		}
 		return Response.status(Response.Status.CREATED).entity(jsonObject).build();
@@ -126,7 +135,9 @@ public class TestService {
 			customerIds = testServiceHelper.getAllCustomerIds();
 		} catch (Exception e) {
 			LOGGER.error("could not create account because of " + e.getMessage(), e);
-			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+			JSONObject error=new JSONObject();
+			error.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
 		}
 
 		return Response.status(Response.Status.OK).entity(customerIds).build();

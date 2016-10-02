@@ -94,10 +94,7 @@ public class BmsTemplateImpl implements IBmsTemplate {
 	public void createAccount(AccountInfo accountInfo) {
 
 		session = sessionFactory.getCurrentSession();
-		Transaction tx = null;
-		tx = session.beginTransaction();
 		session.save(accountInfo);
-		tx.commit();
 
 	}
 

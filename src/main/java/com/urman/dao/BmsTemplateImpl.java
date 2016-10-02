@@ -65,17 +65,12 @@ public class BmsTemplateImpl implements IBmsTemplate {
 		List<AccountInfo> lstAccounts = null;
 		session = sessionFactory.getCurrentSession();
 
-		try {
-			Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
-			cr.add(Restrictions.eq("customerId", customerId));
-			@SuppressWarnings("unchecked")
-			List<CustomerPersonalInfo> results = cr.list();
-			CustomerPersonalInfo customerInfo = results.get(0);
-			lstAccounts = customerInfo.getLstAccounts();
-
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
+		Criteria cr = session.createCriteria(CustomerPersonalInfo.class);
+		cr.add(Restrictions.eq("customerId", customerId));
+		@SuppressWarnings("unchecked")
+		List<CustomerPersonalInfo> results = cr.list();
+		CustomerPersonalInfo customerInfo = results.get(0);
+		lstAccounts = customerInfo.getLstAccounts();
 
 		return lstAccounts;
 	}

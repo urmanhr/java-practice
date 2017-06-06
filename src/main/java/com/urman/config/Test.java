@@ -1,4 +1,4 @@
-package com.urman.test;
+package com.urman.config;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -50,11 +50,7 @@ public class Test extends Application<ServiceConfiguration>{
         for(Map.Entry<String,Object> entry : resources.entrySet()) {
             environment.jersey().register(entry.getValue());
         }
-    	/*final TestService service=new TestService();
-    	final TemplateHealthCheck healthCheck =
-    	        new TemplateHealthCheck(configuration.getTemplate());
-    	    environment.healthChecks().register("template", healthCheck);
-    	environment.jersey().register(service);*/
+    	
     	// Enable CORS headers
         final FilterRegistration.Dynamic cors =
             environment.servlets().addFilter("cors", CrossOriginFilter.class);

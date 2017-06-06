@@ -20,10 +20,10 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class Test extends Application<ServiceConfiguration>{
+public class TestApplication extends Application<ServiceConfiguration>{
 	
 	public static void main(String[] args) throws Exception {
-        new Test().run(args);
+        new TestApplication().run(args);
     }
 
     @Override
